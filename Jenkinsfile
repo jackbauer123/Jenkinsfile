@@ -1,7 +1,10 @@
-podTemplate {
-    node(jenkins-slaves) {
-        stage('Run shell') {
-            sh 'echo hello world'
+node('jenkins-slaves') {
+    stage('Checkout') {
+        checkout scm
+    }
+    stage('Build'){
+        container('go-agent') {
+            // This is where we build our code.
         }
     }
 }
