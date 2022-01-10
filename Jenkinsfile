@@ -3,7 +3,7 @@ node('jenkins-slave') {
         checkout scm
     }
     stage('Build'){
-        container('go-agent') {
+        container('nginx') {
             // This is where we build our code.
         }
     }
