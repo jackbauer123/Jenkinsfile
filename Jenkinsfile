@@ -1,34 +1,7 @@
-pipeline {
-  agent any
-  stages {
-    stage('Build') {
-      parallel {
-        stage('Build') {
-          steps {
-            echo 'Building..'
-          }
+podTemplate {
+    node(POD_LABEL) {
+        stage('Run shell') {
+            sh 'echo hello world'
         }
-
-        stage('build2') {
-          steps {
-            echo 'build2'
-          }
-        }
-
-      }
     }
-
-    stage('Test') {
-      steps {
-        echo 'Testing..'
-      }
-    }
-
-    stage('Deploy') {
-      steps {
-        echo 'Deploying....'
-      }
-    }
-
-  }
 }
