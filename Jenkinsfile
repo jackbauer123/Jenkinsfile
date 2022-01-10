@@ -1,4 +1,4 @@
-node('jenkins-slave') {
+node('test-pod') {
     stage('Checkout') {
         checkout scm
     }
