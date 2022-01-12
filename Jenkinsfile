@@ -1,8 +1,6 @@
 def label = "mypod-${UUID.randomUUID().toString()}"
 
-podTemplate(label:label,cloud: "kubernetes",containers: [
-    containerTemplate(name: 'maven', image: 'maven:3.8.1-jdk-8', command: 'sleep', args: '99d')
-  ]) {
+podTemplate(label:label,cloud: "kubernetes") {
   node {
 		stage('Clone Code') {
 				dir('baas-ops') {
