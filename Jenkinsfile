@@ -5,7 +5,7 @@ podTemplate(label:label,cloud: "kubernetes",containers: [
   ]) {
   node (label) {
     stage('Get a Maven project') {
-            git 'https://github.com/jackbauer123/mytest.git'
+            git credentialsId:'github', url: 'https://github.com/jackbauer123/mytest.git'
             container('maven') {
                 stage('Build a Maven project') {
                     sh 'mvn -B -ntp clean install'
