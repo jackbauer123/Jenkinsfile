@@ -1,23 +1,17 @@
 def label = "mypod-${UUID.randomUUID().toString()}"
 
-podTemplate(label:label,cloud: "kubernetes",yaml:'''
-spec:
-  containers:
-  - name: stress-ng
-    image: polinux/stress-ng
-    command: ['sh', '-c', "sleep 30; stress-ng --vm 2 --timeout 30s -v"]
-    tty: true
-    securityContext:
-      runAsUser: 0
-      privileged: true
-    resources:
-      limits:
-        memory: "256Mi"
-      requests:
-        memory: "256Mi"
-''') {
+podTemplate(label:label,cloud: "kubernetes",containers: [
+    containerTemplate(name: 'maven', image: 'maven:3.8.1-jdk-8', command: 'sleep', args: '99d')
+  ]) {
   node (label) {
-    sh 'sleep 120'
+    stage('Get a Maven project') {
+            git 'https://github.com/jenkinsci/kubernetes-plugin.git'
+            container('maven') {
+                stage('Build a Maven project') {
+                    sh 'mvn -B -ntp clean install'
+                }
+            }
+     }
   }
 }
 
