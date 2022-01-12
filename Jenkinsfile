@@ -3,15 +3,43 @@ def label = "mypod-${UUID.randomUUID().toString()}"
 podTemplate(label:label,cloud: "kubernetes",containers: [
     containerTemplate(name: 'maven', image: 'maven:3.8.1-jdk-8', command: 'sleep', args: '99d')
   ]) {
-  node (label) {
-    stage('Get a Maven project') {
-            git credentialsId:'github', url: 'https://github.com/jackbauer123/mytest.git'
-            container('maven') {
-                stage('Build a Maven project') {
-                    sh 'mvn -B -ntp clean install'
-                }
-            }
-     }
-  }
+  node {
+		stage('Clone Code') {
+				dir('baas-ops') {
+						git credentialsId: 'umarkci', url: 'git@github.******.com:umark/baas-ops.git'
+				}
+		}
+
+		stage('Unit testing') {
+				docker.image('busybox').inside {
+						sh 'echo "Unit testing step !!!"'
+				}
+		}
+
+		stage('Build') {
+				docker.image('busybox').inside {
+						sh 'echo  Build step !!!'
+				}
+		}
+
+		stage('Image Build And Push') {
+				dir('baas-ops/oboe/cli') {
+					 docker.withRegistry('https://registry.******.com:8080', 'registry-hub-credentials') {
+								docker.build('oboe-cli').push('t1')
+						} 
+				}
+
+		}
+
+		stage('Deploy images') {
+				try {
+						sh 'docker rm -f test'
+				} catch(e) {
+
+				}
+				docker.image('oboe-cli:t1').run('-p 80:3000 --name test')
+		}
+    }
+
 }
 
