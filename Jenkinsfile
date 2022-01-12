@@ -4,7 +4,7 @@ podTemplate(label:label,cloud: "kubernetes") {
   node {
 		stage('Clone Code') {
 				dir('baas-ops') {
-						git credentialsId: 'umarkci', url: 'git@github.******.com:umark/baas-ops.git'
+						git credentialsId: 'github', url: 'https://github.com/jackbauer123/mytest.git'
 				}
 		}
 
@@ -22,7 +22,7 @@ podTemplate(label:label,cloud: "kubernetes") {
 
 		stage('Image Build And Push') {
 				dir('baas-ops/oboe/cli') {
-					 docker.withRegistry('https://registry.******.com:8080', 'registry-hub-credentials') {
+					 docker.withRegistry('https://harbor.yuanzhibin.com:8080', 'registry-hub-credentials') {
 								docker.build('oboe-cli').push('t1')
 						} 
 				}
