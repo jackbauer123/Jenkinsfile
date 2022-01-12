@@ -1,6 +1,6 @@
 def label = "mypod-${UUID.randomUUID().toString()}"
 
-podTemplate(cloud: "kubernetes",yaml:'''
+podTemplate(label:label,cloud: "kubernetes",yaml:'''
 spec:
   containers:
   - name: stress-ng
