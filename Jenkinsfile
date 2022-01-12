@@ -1,17 +1,23 @@
-import com.foo.utils.PodTemplates
-
-def label = "mypod-${UUID.randomUUID().toString()}"
-podTemplates = new PodTemplates()
-
-podTemplates.dockerTemplate {
-  podTemplates.mavenTemplate {
-    node(POD_LABEL) {
-      container('docker') {
-        sh "echo hello from $POD_CONTAINER" // displays 'hello from docker'
+pipeline {
+  agent {
+    kubernetes {
+      containerTemplate {
+        name 'docker'
+        image 'docker:1.11'
+        ttyEnabled true
+        command 'cat'
       }
-      container('maven') {
-        sh "echo hello from $POD_CONTAINER" // displays 'hello from maven'
-      }
-     }
+    }
+  }
+  stages {
+    stage('Run maven') {
+        steps {
+            container('docker') {
+                withDockerRegistry(registry: [credentialsId: 'ContainerExecDecoratorPipelineTest-docker']) {
+                    sh 'hostname'
+                }
+            }
+        }
+    }
   }
 }
