@@ -1,6 +1,6 @@
-def label = "mypod-${UUID.randomUUID().toString()}"
 import com.foo.utils.PodTemplates
 
+def label = "mypod-${UUID.randomUUID().toString()}"
 podTemplates = new PodTemplates()
 
 podTemplates.dockerTemplate {
