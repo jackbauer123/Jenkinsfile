@@ -4,7 +4,7 @@ podTemplate(label:label,cloud: "kubernetes") {
   node {
 		stage('Clone Code') {
 				dir('baas-ops') {
-						git credentialsId: 'github', url: 'https://github.com/jackbauer123/mytest.git'
+						git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'
 				}
 		}
 
