@@ -1,7 +1,7 @@
 def label = "mypod-${UUID.randomUUID().toString()}"
 
 podTemplate(label:label,cloud: "kubernetes",containers: [
-    containerTemplate(name: 'maven', image: 'dockerfile-maven-plugin:1.4.10', command: 'sleep', args: '99d')
+    containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8', command: 'sleep', args: '99d')
   ]) {
   node(label) {
 		
