@@ -8,16 +8,12 @@ podTemplate(label:label,cloud: "kubernetes") {
 				}
 		}
 
-		stage('Unit testing') {
-				docker.image('busybox').inside {
-						sh 'echo "Unit testing step !!!"'
-				}
-		}
+		
 
 		stage('Build') {
-				docker.image('busybox').inside {
-						sh 'echo  Build step !!!'
-				}
+				container('maven') {
+					sh 'mvn -B -ntp clean package -DskipTests'
+				      }
 		}
 
 		stage('Image Build And Push') {
