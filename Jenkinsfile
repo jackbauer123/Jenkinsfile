@@ -18,7 +18,9 @@ podTemplate(label:label,cloud: "kubernetes",containers: [
 	  	
 		  stage('image') {
 			  container('docker'){
-				
+				docker.withRegistry('https://harbor.yuanzhibin.com', 'registry-hub-credentials') {
+								docker.build('oboe-cli').push('t1')
+						} 
 			  }
 		  }
 
