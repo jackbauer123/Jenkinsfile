@@ -16,11 +16,11 @@ podTemplate(label:label,cloud: "kubernetes",containers: [
 		}
 
 		stage('Image Build And Push') {
-				dir('baas-ops/oboe/cli') {
-					 docker.withRegistry('https://harbor.yuanzhibin.com:8080', 'registry-hub-credentials') {
+				
+					 docker.withRegistry('https://harbor.yuanzhibin.com', 'registry-hub-credentials') {
 								docker.build('oboe-cli').push('t1')
 						} 
-				}
+				
 
 		}
 
