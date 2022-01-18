@@ -28,7 +28,7 @@ podTemplate(label:label,cloud: "kubernetes",
 		  stage('build image') {
 			  //dir('/tmp'){
 				  container('docker'){
-					  app = docker.build("harbor.yuanzhibin.com/test")
+					  app = docker.build("jackbauer123/test")
 				  }
 			 // }
 		  }
