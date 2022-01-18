@@ -7,7 +7,11 @@ podTemplate(label:label,cloud: "kubernetes",
     volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]) {
   node(label) {
 		
-
+		environment {
+			registry = "YourDockerhubAccount/YourRepository"
+			registryCredential = 'dockerhub_id'
+			dockerImage = ''
+		}
 		stage('SCM') {
 			//dir('/tmp'){
 				git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'
@@ -31,7 +35,7 @@ podTemplate(label:label,cloud: "kubernetes",
 	  
 		  stage('Push image') {
 			  container('docker'){
-				docker.withRegistry('https://harbor.yuanzhibin.com', 'dac9d51b-78ea-4698-9e2d-1f8b7f601402') {
+				docker.withRegistry('', 'hubdocker') {
 							app.push("${env.BUILD_NUMBER}")
 							app.push("latest")
 				} 
