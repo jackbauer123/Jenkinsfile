@@ -22,16 +22,24 @@ podTemplate(label:label,cloud: "kubernetes",
 				}
 			
 		}
-	  	
-		  stage('image') {
+	 
+		  stage('build image') {
 			  //dir('/tmp'){
 				  container('docker'){
-					docker.withRegistry('https://harbor.yuanzhibin.com', 'dac9d51b-78ea-4698-9e2d-1f8b7f601402') {
-									docker.build('harbor.yuanzhibin/library/test').push('t1')
-							} 
+					  app = docker.build("harbor.yuanzhibin.com/test")
 				  }
 			 // }
 		  }
+	  
+		  stage('Push image') {
+			  container('docker'){
+				docker.withRegistry('https://harbor.yuanzhibin.com', 'dac9d51b-78ea-4698-9e2d-1f8b7f601402') {
+							app.push("${env.BUILD_NUMBER}")
+							app.push("latest")
+				} 
+
+			  }	  
+		 }
 
 		
     }
