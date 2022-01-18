@@ -17,9 +17,9 @@ podTemplate(label:label,cloud: "kubernetes",
 		}
 
 		stage('Build') {
-				container('maven') {
-					sh 'mvn -B -ntp clean package -DskipTests'
-				}
+			container('maven') {
+				sh 'mvn -B -ntp clean package -DskipTests'
+			}
 			
 		}
 	 
