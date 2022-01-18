@@ -8,15 +8,17 @@ podTemplate(label:label,cloud: "kubernetes",
   node(label) {
 		
 
-		
-
-		stage('Build') {
+		stage('SCM') {
 			dir('/tmp'){
 				git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'
+			}
+		}
+
+		stage('Build') {
 				container('maven') {
 					sh 'mvn -B -ntp clean package -DskipTests'
 				}
-			}
+			
 		}
 	  	
 		  stage('image') {
