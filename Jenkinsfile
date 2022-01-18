@@ -27,7 +27,7 @@ podTemplate(label:label,cloud: "kubernetes",
 			  //dir('/tmp'){
 				  container('docker'){
 					docker.withRegistry('https://harbor.yuanzhibin.com', 'dac9d51b-78ea-4698-9e2d-1f8b7f601402') {
-									docker.build('oboe-cli').push('t1')
+									docker.build('harbor.yuanzhibin/library/test').push('t1')
 							} 
 				  }
 			 // }
