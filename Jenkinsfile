@@ -11,17 +11,21 @@ podTemplate(label:label,cloud: "kubernetes",
 		
 
 		stage('Build') {
-			git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'
-			container('maven') {
-				sh 'mvn -B -ntp clean package -DskipTests'
+			dir('/tmp'){
+				git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'
+				container('maven') {
+					sh 'mvn -B -ntp clean package -DskipTests'
+				}
 			}
 		}
 	  	
 		  stage('image') {
-			  container('docker'){
-				docker.withRegistry('https://harbor.yuanzhibin.com', 'registry-hub-credentials') {
-								docker.build('oboe-cli').push('t1')
-						} 
+			  dir('/tmp'){
+				  container('docker'){
+					docker.withRegistry('https://harbor.yuanzhibin.com', 'registry-hub-credentials') {
+									docker.build('oboe-cli').push('t1')
+							} 
+				  }
 			  }
 		  }
 
