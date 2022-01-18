@@ -26,7 +26,7 @@ podTemplate(label:label,cloud: "kubernetes",
 		  stage('image') {
 			  //dir('/tmp'){
 				  container('docker'){
-					docker.withRegistry('https://harbor.yuanzhibin.com', 'hub-docker') {
+					docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-jack') {
 									docker.build('oboe-cli').push('t1')
 							} 
 				  }
