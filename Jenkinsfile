@@ -28,7 +28,7 @@ podTemplate(label:label,cloud: "kubernetes",
 		}
 	  
 	  stage('Parallel Stage') {
-		  failFast true
+		  //failFast true
 	  	 parallel {
 			 stage('build storage image') {
 			  //dir('/tmp'){
