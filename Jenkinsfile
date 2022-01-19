@@ -30,7 +30,7 @@ podTemplate(label:label,cloud: "kubernetes",
 		  stage('build storage image') {
 			  //dir('/tmp'){
 				  container('docker'){
-					  storage = docker.build("library/storage:${env.BUILD_ID}","./storage")
+					  storage = docker.build("jackbauer123/storage:${env.BUILD_ID}","./storage")
 				  }
 			 // }
 		  }
@@ -38,7 +38,7 @@ podTemplate(label:label,cloud: "kubernetes",
 	   stage('build account image') {
 			  //dir('/tmp'){
 				  container('docker'){
-					  account = docker.build("library/account:${env.BUILD_ID}","./account")
+					  account = docker.build("jackbauer123/account:${env.BUILD_ID}","./account")
 				  }
 			 // }
 		  }
@@ -46,7 +46,7 @@ podTemplate(label:label,cloud: "kubernetes",
 	   stage('build order image') {
 			  //dir('/tmp'){
 				  container('docker'){
-					  order = docker.build("library/order:${env.BUILD_ID}","./order")
+					  order = docker.build("jackbauer123/order:${env.BUILD_ID}","./order")
 				  }
 			 // }
 		  }
@@ -55,7 +55,7 @@ podTemplate(label:label,cloud: "kubernetes",
 	   stage('build logic image') {
 			  //dir('/tmp'){
 				  container('docker'){
-					  logic = docker.build("library/logic:${env.BUILD_ID}","./logic")
+					  logic = docker.build("jackbauer123/logic:${env.BUILD_ID}","./logic")
 				  }
 			 // }
 		  }
@@ -64,7 +64,7 @@ podTemplate(label:label,cloud: "kubernetes",
 	  
 		  stage('Push image') {
 			  container('docker'){
-				docker.withRegistry('http://harbor.yuanzhibin.com', 'harbor-admin') {
+				docker.withRegistry('', 'hubdocker') {
 							storage.push("${env.BUILD_NUMBER}")
 							storage.push("latest")
 					
