@@ -30,7 +30,7 @@ podTemplate(label:label,cloud: "kubernetes",
 		  stage('build storage image') {
 			  //dir('/tmp'){
 				  container('docker'){
-					  storage = docker.build("library/storage:${env.BUILD_ID}","./storage/Dockerfile")
+					  storage = docker.build("library/storage:${env.BUILD_ID}","./storage")
 				  }
 			 // }
 		  }
@@ -38,7 +38,7 @@ podTemplate(label:label,cloud: "kubernetes",
 	   stage('build account image') {
 			  //dir('/tmp'){
 				  container('docker'){
-					  account = docker.build("library/account:${env.BUILD_ID}","./account/Dockerfile")
+					  account = docker.build("library/account:${env.BUILD_ID}","./account")
 				  }
 			 // }
 		  }
@@ -46,7 +46,7 @@ podTemplate(label:label,cloud: "kubernetes",
 	   stage('build order image') {
 			  //dir('/tmp'){
 				  container('docker'){
-					  order = docker.build("library/order:${env.BUILD_ID}","./order/Dockerfile")
+					  order = docker.build("library/order:${env.BUILD_ID}","./order")
 				  }
 			 // }
 		  }
@@ -55,7 +55,7 @@ podTemplate(label:label,cloud: "kubernetes",
 	   stage('build logic image') {
 			  //dir('/tmp'){
 				  container('docker'){
-					  logic = docker.build("library/logic:${env.BUILD_ID}","./logic/Dockerfile")
+					  logic = docker.build("library/logic:${env.BUILD_ID}","./logic")
 				  }
 			 // }
 		  }
