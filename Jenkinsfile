@@ -64,7 +64,7 @@ podTemplate(label:label,cloud: "kubernetes",
 	  
 		  stage('Push image') {
 			  container('docker'){
-				docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
+				docker.withRegistry('http://harbor.yuanzhibin.com', 'harbor-admin') {
 							storage.push("${env.BUILD_NUMBER}")
 							storage.push("latest")
 					
