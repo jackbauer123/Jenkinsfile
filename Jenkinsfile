@@ -92,17 +92,18 @@ podTemplate(label:label,cloud: "kubernetes",
 	  
 	  	stage('deploy'){
 	  
-			kubernetesDeploy(kubeconfigId: 'kubeconfig-credentials-id',               // REQUIRED
+			kubernetesDeploy(kubeconfigId: 'kube2',               // REQUIRED
 
-					 configs: '<ant-glob-pattern-for-resource-config-paths>', // REQUIRED
-					 enableConfigSubstitution: false,
+					 configs: 'account.yaml,storage.yaml,order.yaml,logic.yaml', // REQUIRED
+					 enableConfigSubstitution: false
+					 //,
 
-					 secretNamespace: '<secret-namespace>',
-					 secretName: '<secret-name>',
-					 dockerCredentials: [
-						[credentialsId: '<credentials-id-for-docker-hub>'],
-						[credentialsId: '<credentials-id-for-other-private-registry>', url: '<registry-url>'],
-					 ]
+					 //secretNamespace: '<secret-namespace>',
+					 //secretName: '<secret-name>',
+					 //dockerCredentials: [
+					//	[credentialsId: '<credentials-id-for-docker-hub>'],
+					//	[credentialsId: '<credentials-id-for-other-private-registry>', url: '<registry-url>'],
+					 //]
 			)
 	  
 	  	}	
