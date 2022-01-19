@@ -26,8 +26,11 @@ podTemplate(label:label,cloud: "kubernetes",
 			}
 			
 		}
-	 
-		  stage('build storage image') {
+	  
+	  stage('Parallel Stage') {
+		  failFast true
+	  	 parallel {
+			 stage('build storage image') {
 			  //dir('/tmp'){
 				  container('docker'){
 					  storage = docker.build("jackbauer123/storage:${env.BUILD_ID}","./storage")
@@ -80,6 +83,12 @@ podTemplate(label:label,cloud: "kubernetes",
 
 			  }	  
 		 }
+			 
+		 }
+	  
+	  }
+	 
+		  
 	  
 	  	stage('deploy'){
 	  
