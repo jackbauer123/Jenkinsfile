@@ -27,9 +27,9 @@ podTemplate(label:label,cloud: "kubernetes",
 			
 		}
 	  
-	  stage('Parallel Stage') {
-		  //failFast true
-	  	 parallel {
+	 
+		 
+	  	
 			 stage('build storage image') {
 			  //dir('/tmp'){
 				  container('docker'){
@@ -82,9 +82,9 @@ podTemplate(label:label,cloud: "kubernetes",
 				} 
 
 			  }	  
-		 }
+		 
 			 
-		 }
+		 
 	  
 	  }
 	 
