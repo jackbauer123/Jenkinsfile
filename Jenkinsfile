@@ -28,14 +28,14 @@ podTemplate(label:label,cloud: "kubernetes",
 		  stage('build image') {
 			  //dir('/tmp'){
 				  container('docker'){
-					  app = docker.build("jackbauer123/test")
+					  app = docker.build("library/test")
 				  }
 			 // }
 		  }
 	  
 		  stage('Push image') {
 			  container('docker'){
-				docker.withRegistry('', 'hubdocker') {
+				docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
 							app.push("${env.BUILD_NUMBER}")
 							app.push("latest")
 				} 
