@@ -28,9 +28,9 @@ podTemplate(label:label,cloud: "kubernetes",
 		
 	  	stage('deploy account'){
 	  
-			withKubeConfig([credentialsId: 'kube2', serverUrl: 'https://10.168.1.199:6443']) {
-			      sh 'kubectl apply -f account/account.yaml'
-			    }
+			//withKubeConfig([credentialsId: 'kube2', serverUrl: 'https://10.168.1.199:6443']) {
+			  //    sh 'kubectl apply -f account/account.yaml'
+			   // }
 			
 			//container('maven') {
 			      // 如果不提供 kubeconfigFile，则 kubectl 上下文找不到
@@ -39,10 +39,10 @@ podTemplate(label:label,cloud: "kubernetes",
 			  //    }
 			   // }
 			
-			//kubernetesDeploy(kubeconfigId: 'kubeconfig-credentials-id',               // REQUIRED
+			kubernetesDeploy(kubeconfigId: 'kubeconfig-credentials-id',               // REQUIRED
 
-			//		 configs: 'account/account.yaml', // REQUIRED
-			//		 enableConfigSubstitution: true
+					 configs: 'account/account.yaml', // REQUIRED
+					 enableConfigSubstitution: true
 					 //,
 
 					 //secretNamespace: '<secret-namespace>',
@@ -51,7 +51,7 @@ podTemplate(label:label,cloud: "kubernetes",
 					//	[credentialsId: '<credentials-id-for-docker-hub>'],
 					//	[credentialsId: '<credentials-id-for-other-private-registry>', url: '<registry-url>'],
 					 //]
-			//)
+			)
 	  
 	  	}
 	  
