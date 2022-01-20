@@ -13,6 +13,9 @@ podTemplate(label:label,cloud: "kubernetes",
 			registry = "YourDockerhubAccount/YourRepository"
 			registryCredential = 'dockerhub_id'
 			dockerImage = ''
+        		JOB_NAME = "${JOB_NAME}".replace("-deploy", "")
+       			 REGISTRY = "my-docker-registry"
+  	
 		}
 		stage('SCM') {
 			//dir('/tmp'){
