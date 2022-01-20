@@ -3,7 +3,8 @@ def label = "mypod-${UUID.randomUUID().toString()}"
 podTemplate(label:label,cloud: "kubernetes",
     containers: [
     	containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8', command: 'sleep', args: '99d'),
-    	containerTemplate(name: 'docker', image: 'docker', command: 'sleep', args: '99d')]
+    	containerTemplate(name: 'docker', image: 'docker', command: 'sleep', args: '99d'),
+    	containerTemplate(name: 'jnlp',image: 'hub.sx.com/ops/jenkins-slave')]
 	    ,
     volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]
 	   ) {
