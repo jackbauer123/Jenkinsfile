@@ -18,6 +18,13 @@ podTemplate(label:label,cloud: "kubernetes",
 			KUBECONFIG_CREDENTIAL_ID = 'kubeconfig-credentials-id'
   	
 		}
+	  
+	  
+	  stage('SCM') {
+			//dir('/tmp'){
+				git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'
+			//}
+		}
 		
 	  	stage('deploy account'){
 	  
