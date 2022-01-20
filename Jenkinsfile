@@ -79,7 +79,7 @@ podTemplate(label:label,cloud: "kubernetes",
 			
 			container('maven') {
 			      // 如果不提供 kubeconfigFile，则 kubectl 上下文找不到
-			      withCredentials([kubeconfigFile(credentialsId: env.KUBECONFIG_CREDENTIAL_ID, variable: 'KUBECONFIG')]) {
+			      withCredentials([kubeconfigFile(credentialsId: 'kubeconfig-credentials-id', variable: 'KUBECONFIG')]) {
 				sh 'kubectl apply -f account/account.yaml'
 			      }
 			    }
