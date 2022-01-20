@@ -94,7 +94,7 @@ podTemplate(label:label,cloud: "kubernetes",
 	  
 			kubernetesDeploy(kubeconfigId: 'kubeconfig-credentials-id',               // REQUIRED
 
-					 configs: './account/account.yaml', // REQUIRED
+					 configs: 'account/account.yaml', // REQUIRED
 					 enableConfigSubstitution: false
 					 //,
 
