@@ -33,13 +33,7 @@ podTemplate(label:label,cloud: "kubernetes",
 	 
 		 
 	  	
-			 stage('build storage image') {
-			  //dir('/tmp'){
-				  container('docker'){
-					  storage = docker.build("jackbauer123/storage:${env.BUILD_ID}","./storage")
-				  }
-			 // }
-		  }
+			 
 	  
 	   stage('build account image') {
 			  //dir('/tmp'){
@@ -49,39 +43,24 @@ podTemplate(label:label,cloud: "kubernetes",
 			 // }
 		  }
 	  
-	   stage('build order image') {
-			  //dir('/tmp'){
-				  container('docker'){
-					  order = docker.build("jackbauer123/order:${env.BUILD_ID}","./order")
-				  }
-			 // }
-		  }
 	  
-	  
-	   stage('build logic image') {
-			  //dir('/tmp'){
-				  container('docker'){
-					  logic = docker.build("jackbauer123/logic:${env.BUILD_ID}","./logic")
-				  }
-			 // }
-		  }
 	  
 	  
 	  
 		  stage('Push image') {
 			  container('docker'){
 				docker.withRegistry('', 'hubdocker') {
-							storage.push("${env.BUILD_NUMBER}")
-							storage.push("latest")
+							//storage.push("${env.BUILD_NUMBER}")
+							//storage.push("latest")
 					
 					account.push("${env.BUILD_NUMBER}")
 							account.push("latest")
 					
-					order.push("${env.BUILD_NUMBER}")
-							order.push("latest")
+					//order.push("${env.BUILD_NUMBER}")
+					//		order.push("latest")
 					
-					logic.push("${env.BUILD_NUMBER}")
-							logic.push("latest")
+					//logic.push("${env.BUILD_NUMBER}")
+					//		logic.push("latest")
 				} 
 
 			  }	  
@@ -111,61 +90,7 @@ podTemplate(label:label,cloud: "kubernetes",
 	  
 	  	}
 	  
-	  stage('deploy storage'){
-	  
-			kubernetesDeploy(kubeconfigId: 'kubeconfig-credentials-id',               // REQUIRED
-
-					 configs: 'storage.yaml', // REQUIRED
-					 enableConfigSubstitution: false
-					 //,
-
-					 //secretNamespace: '<secret-namespace>',
-					 //secretName: '<secret-name>',
-					 //dockerCredentials: [
-					//	[credentialsId: '<credentials-id-for-docker-hub>'],
-					//	[credentialsId: '<credentials-id-for-other-private-registry>', url: '<registry-url>'],
-					 //]
-			)
-	  
-	  	}	
-	  
-	  stage('deploy order'){
-	  
-			kubernetesDeploy(kubeconfigId: 'kubeconfig-credentials-id',               // REQUIRED
-
-					 configs: 'order.yaml', // REQUIRED
-					 enableConfigSubstitution: false
-					 //,
-
-					 //secretNamespace: '<secret-namespace>',
-					 //secretName: '<secret-name>',
-					 //dockerCredentials: [
-					//	[credentialsId: '<credentials-id-for-docker-hub>'],
-					//	[credentialsId: '<credentials-id-for-other-private-registry>', url: '<registry-url>'],
-					 //]
-			)
-	  
-	  	}	
-	  
-	  
-	  stage('deploy logic'){
-	  
-			kubernetesDeploy(kubeconfigId: 'kubeconfig-credentials-id',               // REQUIRED
-
-					 configs: 'logic.yaml', // REQUIRED
-					 enableConfigSubstitution: false
-					 //,
-
-					 //secretNamespace: '<secret-namespace>',
-					 //secretName: '<secret-name>',
-					 //dockerCredentials: [
-					//	[credentialsId: '<credentials-id-for-docker-hub>'],
-					//	[credentialsId: '<credentials-id-for-other-private-registry>', url: '<registry-url>'],
-					 //]
-			)
-	  
-	  	}	
-	  
+	
 	 
 
 		
