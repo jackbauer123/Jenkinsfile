@@ -75,7 +75,7 @@ podTemplate(label:label,cloud: "kubernetes",
 	  
 	  	stage('deploy account'){
 	  
-			withKubeConfig([credentialsId: 'kubeconfig-credentials-id', serverUrl: 'https://10.168.1.199:6443']) {
+			withKubeConfig([credentialsId: 'kube2', serverUrl: 'https://10.168.1.199:6443']) {
 			      sh 'kubectl apply -f account/account.yaml'
 			    }
 			
