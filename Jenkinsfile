@@ -18,61 +18,7 @@ podTemplate(label:label,cloud: "kubernetes",
 			KUBECONFIG_CREDENTIAL_ID = 'kubeconfig-credentials-id'
   	
 		}
-		stage('SCM') {
-			//dir('/tmp'){
-				git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'
-			//}
-		}
-
-		stage('Build') {
-			container('maven') {
-				sh 'mvn -B -ntp clean package -DskipTests'
-			}
-			
-		}
-	  
-	 
-		 
-	  	
-			 
-	  
-	   stage('build account image') {
-			  //dir('/tmp'){
-				  container('docker'){
-					  account = docker.build("jackbauer123/account:${env.BUILD_ID}","./account")
-				  }
-			 // }
-		  }
-	  
-	  
-	  
-	  
-	  
-		  stage('Push image') {
-			  container('docker'){
-				docker.withRegistry('', 'hubdocker') {
-							//storage.push("${env.BUILD_NUMBER}")
-							//storage.push("latest")
-					
-					account.push("${env.BUILD_NUMBER}")
-							account.push("latest")
-					
-					//order.push("${env.BUILD_NUMBER}")
-					//		order.push("latest")
-					
-					//logic.push("${env.BUILD_NUMBER}")
-					//		logic.push("latest")
-				} 
-
-			  }	  
-		 
-			 
-		 
-	  
-	  }
-	 
-		  
-	  
+		
 	  	stage('deploy account'){
 	  
 			withKubeConfig([credentialsId: 'kube2', serverUrl: 'https://10.168.1.199:6443']) {
