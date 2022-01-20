@@ -75,14 +75,16 @@ podTemplate(label:label,cloud: "kubernetes",
 	  
 	  	stage('deploy account'){
 	  
-			
-			
-			container('maven') {
-			      // 如果不提供 kubeconfigFile，则 kubectl 上下文找不到
-			      withCredentials([kubeconfigFile(credentialsId: 'kubeconfig-credentials-id', variable: 'KUBECONFIG')]) {
-				sh 'kubectl apply -f account/account.yaml'
-			      }
+			withKubeConfig([credentialsId: 'kubeconfig-credentials-id', serverUrl: 'https://10.168.1.199:6443']) {
+			      sh 'kubectl apply -f account/account.yaml'
 			    }
+			
+			//container('maven') {
+			      // 如果不提供 kubeconfigFile，则 kubectl 上下文找不到
+			  //    withCredentials([kubeconfigFile(credentialsId: 'kubeconfig-credentials-id', variable: 'KUBECONFIG')]) {
+			//	sh 'kubectl apply -f account/account.yaml'
+			  //    }
+			   // }
 			
 			//kubernetesDeploy(kubeconfigId: 'kubeconfig-credentials-id',               // REQUIRED
 
