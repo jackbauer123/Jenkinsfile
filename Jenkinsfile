@@ -90,11 +90,29 @@ podTemplate(label:label,cloud: "kubernetes",
 	 
 		  
 	  
-	  	stage('deploy'){
+	  	stage('deploy account'){
 	  
 			kubernetesDeploy(kubeconfigId: 'kubeconfig-credentials-id',               // REQUIRED
 
-					 configs: 'account.yaml,storage.yaml', // REQUIRED
+					 configs: 'account.yaml', // REQUIRED
+					 enableConfigSubstitution: false
+					 //,
+
+					 //secretNamespace: '<secret-namespace>',
+					 //secretName: '<secret-name>',
+					 //dockerCredentials: [
+					//	[credentialsId: '<credentials-id-for-docker-hub>'],
+					//	[credentialsId: '<credentials-id-for-other-private-registry>', url: '<registry-url>'],
+					 //]
+			)
+	  
+	  	}
+	  
+	  stage('deploy storage'){
+	  
+			kubernetesDeploy(kubeconfigId: 'kubeconfig-credentials-id',               // REQUIRED
+
+					 configs: 'storage.yaml', // REQUIRED
 					 enableConfigSubstitution: false
 					 //,
 
@@ -107,6 +125,45 @@ podTemplate(label:label,cloud: "kubernetes",
 			)
 	  
 	  	}	
+	  
+	  stage('deploy order'){
+	  
+			kubernetesDeploy(kubeconfigId: 'kubeconfig-credentials-id',               // REQUIRED
+
+					 configs: 'order.yaml', // REQUIRED
+					 enableConfigSubstitution: false
+					 //,
+
+					 //secretNamespace: '<secret-namespace>',
+					 //secretName: '<secret-name>',
+					 //dockerCredentials: [
+					//	[credentialsId: '<credentials-id-for-docker-hub>'],
+					//	[credentialsId: '<credentials-id-for-other-private-registry>', url: '<registry-url>'],
+					 //]
+			)
+	  
+	  	}	
+	  
+	  
+	  stage('deploy logic'){
+	  
+			kubernetesDeploy(kubeconfigId: 'kubeconfig-credentials-id',               // REQUIRED
+
+					 configs: 'logic.yaml', // REQUIRED
+					 enableConfigSubstitution: false
+					 //,
+
+					 //secretNamespace: '<secret-namespace>',
+					 //secretName: '<secret-name>',
+					 //dockerCredentials: [
+					//	[credentialsId: '<credentials-id-for-docker-hub>'],
+					//	[credentialsId: '<credentials-id-for-other-private-registry>', url: '<registry-url>'],
+					 //]
+			)
+	  
+	  	}	
+	  
+	 
 
 		
     }
