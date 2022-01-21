@@ -75,9 +75,7 @@ podTemplate(label:label,cloud: "kubernetes",
 	  
 		
 	  	stage('deploy'){
-			steps{
-				echo " running  ${storage}"
-			}
+			
 			
 	  		container('maven') {
 				environment {
