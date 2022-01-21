@@ -1,8 +1,12 @@
 def label = "mypod-${UUID.randomUUID().toString()}"
 
+parameters {
+	string(name: 'buid_id', defaultValue: "${env.BUILD_NUMBER}", description: 'What should I say?')
+  }
+
 podTemplate(label:label,cloud: "kubernetes",
     containers: [
-    	containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8', command: 'sleep', args: '99d'),
+    	containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8', command: 'sleep', args: '99d',envVars: [envVar("BUILD_NUMBER")]),
     	containerTemplate(name: 'docker', image: 'docker', command: 'sleep', args: '99d')]
 	    ,
     volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
@@ -27,20 +31,20 @@ podTemplate(label:label,cloud: "kubernetes",
 				git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'
 			
 		}
-	  	stage('Build jar') {
-			container('maven') {
-				sh 'mvn -B -ntp clean package -DskipTests'
-			}
+	  	//stage('Build jar') {
+		//	container('maven') {
+		//		sh 'mvn -B -ntp clean package -DskipTests'
+		//	}
 			
-		}
+		//}
 	  
-	  	stage('build account image') {
+	  	//stage('build account image') {
 			  
-				  container('docker'){
-					  storage = docker.build("jackbauer123/storage:${env.BUILD_ID}","./account")
-				  }
+		//		  container('docker'){
+		//			  storage = docker.build("jackbauer123/storage:${env.BUILD_ID}","./account")
+		//		  }
 			 
-		  }
+		  //}
 	  
 	  	//stage('build storage image') {
 			  
