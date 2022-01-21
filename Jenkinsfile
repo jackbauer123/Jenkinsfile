@@ -71,6 +71,9 @@ podTemplate(label:label,cloud: "kubernetes",
 		
 	  	stage('deploy'){
 	  		container('maven') {
+				environment {
+					image_version = ${env.BUILD_ID}
+				}
 				withKubeConfig([credentialsId: 'kube2', serverUrl: 'https://10.168.1.199:6443']) {
 				//sh 'curl -LO -o https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl'
 			      		sh 'kubectl apply -f account/account.yaml'
