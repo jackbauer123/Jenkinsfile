@@ -40,7 +40,7 @@ podTemplate(label:label,cloud: "kubernetes",
 		}
 	  	stage('Build jar') {
 			container('maven') {
-				sh 'cd account'
+				
 				sh 'mvn -B -ntp clean package -DskipTests'
 			}
 			
