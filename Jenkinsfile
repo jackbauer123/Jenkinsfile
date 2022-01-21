@@ -21,27 +21,61 @@ podTemplate(label:label,cloud: "kubernetes",
 		}
 	  
 	  
-	  stage('SCM') {
-			//dir('/tmp'){
+	  	stage('SCM') {
+			
 				git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'
-			//}
+			
 		}
+	  
+	  	stage('build account image') {
+			  
+				  container('docker'){
+					  storage = docker.build("jackbauer123/storage:${env.BUILD_ID}","./account")
+				  }
+			 
+		  }
+	  
+	  	stage('build storage image') {
+			  
+				  container('docker'){
+					  storage = docker.build("jackbauer123/storage:${env.BUILD_ID}","./storage")
+				  }
+			 
+		  }
+		  
+		  
+		  
+		   stage('build order image') {
+			  
+				  container('docker'){
+					  order = docker.build("jackbauer123/order:${env.BUILD_ID}","./order")
+				  }
+			 
+		  }
+	  
+	  
+	   	stage('build logic image') {
+			  
+				  container('docker'){	
+					  logic = docker.build("jackbauer123/logic:${env.BUILD_ID}","./logic")
+				  }
+			
+		  }
+	  
 		
 	  	stage('deploy account'){
 	  		container('maven') {
 				withKubeConfig([credentialsId: 'kube2', serverUrl: 'https://10.168.1.199:6443']) {
 				//sh 'curl -LO -o https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl'
-			      sh 'kubectl apply -f account/account.yaml'
+			      		sh 'kubectl apply -f account/account.yaml'
+					sh 'kubectl apply -f storage/storage.yaml'
+					sh 'kubectl apply -f order/order.yaml'
+					sh 'kubectl apply -f logic/logic.yaml'
 			    }
 			}	
 			
 			
-			//container('maven') {
-			      // 如果不提供 kubeconfigFile，则 kubectl 上下文找不到
-			  //    withCredentials([kubeconfigFile(credentialsId: 'kubeconfig-credentials-id', variable: 'KUBECONFIG')]) {
-			//	sh 'kubectl apply -f account/account.yaml'
-			  //    }
-			   // }
+			
 			
 			//kubernetesDeploy(kubeconfigId: 'kubeconfig-credentials-id',               // REQUIRED
 
