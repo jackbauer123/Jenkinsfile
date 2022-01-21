@@ -17,6 +17,7 @@ podTemplate(label:label,cloud: "kubernetes",
         		JOB_NAME = "${JOB_NAME}".replace("-deploy", "")
        			 REGISTRY = "my-docker-registry"
 			KUBECONFIG_CREDENTIAL_ID = 'kubeconfig-credentials-id'
+			BUILD_ID = "${env.BUILD_NUMBER}"
   	
 		}
 	  
