@@ -69,7 +69,7 @@ podTemplate(label:label,cloud: "kubernetes",
 		  }
 	  
 		
-	  	stage('deploy account'){
+	  	stage('deploy'){
 	  		container('maven') {
 				withKubeConfig([credentialsId: 'kube2', serverUrl: 'https://10.168.1.199:6443']) {
 				//sh 'curl -LO -o https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl'
