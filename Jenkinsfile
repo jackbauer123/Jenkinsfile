@@ -48,39 +48,63 @@ podTemplate(label:label,cloud: "kubernetes",
 	  	stage('build account image') {
 			  
 				  container('docker'){
-					  storage = docker.build("jackbauer123/account:${build_tag}","./account")
+					  account = docker.build("jackbauer123/account:${build_tag}","./account")
 				  }
 			 
 		}
 	  
-	  	//stage('build storage image') {
+	  	storage('build storage image') {
 			  
-		//		  container('docker'){
-		//			  storage = docker.build("jackbauer123/storage:${env.BUILD_ID}","./storage")
-		//		  }
+				  container('docker'){
+					  storage = docker.build("jackbauer123/storage:${build_tag}","./storage")
+				  }
 			 
-		  //}
+		 }
 		  
 		  
 		  
-		   //stage('build order image') {
+		  stage('build order image') {
 			  
-			//	  container('docker'){
-			//		  order = docker.build("jackbauer123/order:${env.BUILD_ID}","./order")
-			//	  }
+				  container('docker'){
+					  order = docker.build("jackbauer123/order:${build_tag}","./order")
+				  }
 			 
-		  //}
+		  }
 	  
 	  
-	   	//stage('build logic image') {
+	   	stage('build logic image') {
 			  
-		//		  container('docker'){	
-		//			  logic = docker.build("jackbauer123/logic:${env.BUILD_ID}","./logic")
-		//		  }
+				  container('docker'){	
+					  logic = docker.build("jackbauer123/logic:${build_tag}","./logic")
+				  }
 			
-		 // }
+		  }
 	  
 		
+	  
+	  stage('Push image') {
+			  container('docker'){
+				docker.withRegistry('', 'hubdocker') {
+							storage.push("${build_tag}")
+						
+					
+					account.push("${build_tag}")
+							
+					
+					order.push("${build_tag}")
+						
+					
+					logic.push("${build_tag}")
+							
+				} 
+
+			  }	  
+		 
+			 
+		 
+	  
+	  }
+	  
 	  	stage('deploy'){
 			
 			
