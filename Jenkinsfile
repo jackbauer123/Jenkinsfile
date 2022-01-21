@@ -28,7 +28,7 @@ podTemplate(label:label,cloud: "kubernetes",
 	  
 	  	stage('SCM') {
 			
-				git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'
+			git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'
 			
 			script {
 			    build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
@@ -47,17 +47,17 @@ podTemplate(label:label,cloud: "kubernetes",
 	  
 	  	stage('build account image') {
 			  
-				  container('docker'){
-					  account = docker.build("jackbauer123/account:${build_tag}","./account")
-				  }
+			  container('docker'){
+				  account = docker.build("jackbauer123/account:${build_tag}","./account")
+			  }
 			 
 		}
 	  
 	  	storage('build storage image') {
 			  
-				  container('docker'){
-					  storage = docker.build("jackbauer123/storage:${build_tag}","./storage")
-				  }
+			  container('docker'){
+				  storage = docker.build("jackbauer123/storage:${build_tag}","./storage")
+			  }
 			 
 		 }
 		  
@@ -65,45 +65,40 @@ podTemplate(label:label,cloud: "kubernetes",
 		  
 		  stage('build order image') {
 			  
-				  container('docker'){
-					  order = docker.build("jackbauer123/order:${build_tag}","./order")
-				  }
+			  container('docker'){
+				  order = docker.build("jackbauer123/order:${build_tag}","./order")
+			  }
 			 
 		  }
 	  
 	  
 	   	stage('build logic image') {
 			  
-				  container('docker'){	
-					  logic = docker.build("jackbauer123/logic:${build_tag}","./logic")
-				  }
+			  container('docker'){	
+				  logic = docker.build("jackbauer123/logic:${build_tag}","./logic")
+			  }
 			
 		  }
 	  
 		
 	  
-	  stage('Push image') {
+	  	stage('Push image') {
 			  container('docker'){
 				docker.withRegistry('', 'hubdocker') {
-							storage.push("${build_tag}")
-						
+					
+					storage.push("${build_tag}")
 					
 					account.push("${build_tag}")
 							
-					
 					order.push("${build_tag}")
 						
-					
 					logic.push("${build_tag}")
 							
 				} 
 
 			  }	  
-		 
-			 
-		 
 	  
-	  }
+	 	 }
 	  
 	  	stage('deploy'){
 			
@@ -111,7 +106,7 @@ podTemplate(label:label,cloud: "kubernetes",
 	  		container('maven') {
 				
 				withKubeConfig([credentialsId: 'kube2', serverUrl: 'https://10.168.1.199:6443']) {
-				//sh 'curl -LO -o https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl'
+					//sh 'curl -LO -o https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl'
 					sh "sed -i 's/<BUILD_TAG>/${build_tag}/' account/account.yaml"
 			      		sh 'kubectl apply -f account/account.yaml --record'
 					
