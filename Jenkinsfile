@@ -54,7 +54,7 @@ podTemplate(label:label,cloud: "kubernetes",
 			 
 		}
 	  
-	  	storage('build storage image') {
+	  	stage('build storage image') {
 			  
 			  container('docker'){
 				   storage = docker.build("jackbauer123/storage:${build_tag}","storage")
