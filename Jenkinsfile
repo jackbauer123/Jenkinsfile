@@ -26,6 +26,12 @@ podTemplate(label:label,cloud: "kubernetes",
 				git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'
 			
 		}
+	  	stage('Build jar') {
+			container('maven') {
+				sh 'mvn -B -ntp clean package -DskipTests'
+			}
+			
+		}
 	  
 	  	stage('build account image') {
 			  
