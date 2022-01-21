@@ -48,7 +48,10 @@ podTemplate(label:label,cloud: "kubernetes",
 	  	stage('build account image') {
 			  
 			  container('docker'){
-				  account = docker.build("jackbauer123/account:${build_tag}","./account")
+				  account = docker.build("jackbauer123/account:${build_tag}","account")
+				  storage = docker.build("jackbauer123/storage:${build_tag}","storage")
+				  order = docker.build("jackbauer123/order:${build_tag}","order")
+				  logic = docker.build("jackbauer123/logic:${build_tag}","./logic")
 			  }
 			 
 		}
@@ -56,7 +59,7 @@ podTemplate(label:label,cloud: "kubernetes",
 	  	storage('build storage image') {
 			  
 			  container('docker'){
-				  storage = docker.build("jackbauer123/storage:${build_tag}","./storage")
+				  
 			  }
 			 
 		 }
@@ -66,7 +69,7 @@ podTemplate(label:label,cloud: "kubernetes",
 		  stage('build order image') {
 			  
 			  container('docker'){
-				  order = docker.build("jackbauer123/order:${build_tag}","./order")
+				  
 			  }
 			 
 		  }
@@ -75,7 +78,7 @@ podTemplate(label:label,cloud: "kubernetes",
 	   	stage('build logic image') {
 			  
 			  container('docker'){	
-				  logic = docker.build("jackbauer123/logic:${build_tag}","./logic")
+				  
 			  }
 			
 		  }
