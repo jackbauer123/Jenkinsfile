@@ -15,13 +15,13 @@ podTemplate(label:label,cloud: "kubernetes",
   node(label) {
 		
 		environment {
-			registry = "YourDockerhubAccount/YourRepository"
-			registryCredential = 'dockerhub_id'
-			dockerImage = ''
-        		JOB_NAME = "${JOB_NAME}".replace("-deploy", "")
-       			 REGISTRY = "my-docker-registry"
-			KUBECONFIG_CREDENTIAL_ID = 'kubeconfig-credentials-id'
-			BUILD_ID = "${env.BUILD_NUMBER}"
+			//registry = "YourDockerhubAccount/YourRepository"
+			//registryCredential = 'dockerhub_id'
+			//dockerImage = ''
+        		//JOB_NAME = "${JOB_NAME}".replace("-deploy", "")
+       			 //REGISTRY = "my-docker-registry"
+			//KUBECONFIG_CREDENTIAL_ID = 'kubeconfig-credentials-id'
+			//BUILD_ID = "${env.BUILD_NUMBER}"
   	
 		}
 	  
@@ -38,20 +38,20 @@ podTemplate(label:label,cloud: "kubernetes",
 			}
 			
 		}
-	  	//stage('Build jar') {
-		//	container('maven') {
-		//		sh 'mvn -B -ntp clean package -DskipTests'
-		//	}
+	  	stage('Build jar') {
+			container('maven') {
+				sh 'mvn -B -ntp clean package -DskipTests'
+			}
 			
-		//}
+		}
 	  
-	  	//stage('build account image') {
+	  	stage('build account image') {
 			  
-		//		  container('docker'){
-		//			  storage = docker.build("jackbauer123/storage:${env.BUILD_ID}","./account")
-		//		  }
+				  container('docker'){
+					  storage = docker.build("jackbauer123/account:${build_tag}","./account")
+				  }
 			 
-		  //}
+		}
 	  
 	  	//stage('build storage image') {
 			  
