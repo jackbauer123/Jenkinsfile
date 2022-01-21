@@ -86,9 +86,9 @@ podTemplate(label:label,cloud: "kubernetes",
 			  container('docker'){
 				docker.withRegistry('', 'hubdocker') {
 					
-					storage.push("${build_tag}")
-					
 					account.push("${build_tag}")
+					
+					storage.push("${build_tag}")
 							
 					order.push("${build_tag}")
 						
