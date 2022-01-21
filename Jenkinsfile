@@ -71,7 +71,10 @@ podTemplate(label:label,cloud: "kubernetes",
 	  
 		
 	  	stage('deploy'){
-			sh 'echo ${storage}'
+			steps{
+				echo " running  ${storage}"
+			}
+			
 	  		container('maven') {
 				environment {
 					image_version = ${env.BUILD_ID}
