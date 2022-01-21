@@ -90,7 +90,7 @@ podTemplate(label:label,cloud: "kubernetes",
 				//sh 'curl -LO -o https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl'
 					sh "sed -i 's/<BUILD_TAG>/${build_tag}/' account.yaml"
 					sh "sed -i 's/<BRANCH_NAME>/${env.BRANCH_NAME}/' account.yaml"
-			      		sh 'kubectl apply -f account/account.yaml '
+			      		sh 'kubectl apply -f account/account.yaml --record'
 		//			sh 'kubectl apply -f storage/storage.yaml'
 		//			sh 'kubectl apply -f order/order.yaml'
 		//			sh 'kubectl apply -f logic/logic.yaml'
