@@ -113,11 +113,16 @@ podTemplate(label:label,cloud: "kubernetes",
 				withKubeConfig([credentialsId: 'kube2', serverUrl: 'https://10.168.1.199:6443']) {
 				//sh 'curl -LO -o https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl'
 					sh "sed -i 's/<BUILD_TAG>/${build_tag}/' account/account.yaml"
-					//sh "sed -i 's/<BRANCH_NAME>/${env.BRANCH_NAME}/' account/account.yaml"
 			      		sh 'kubectl apply -f account/account.yaml --record'
-		//			sh 'kubectl apply -f storage/storage.yaml'
-		//			sh 'kubectl apply -f order/order.yaml'
-		//			sh 'kubectl apply -f logic/logic.yaml'
+					
+					sh "sed -i 's/<BUILD_TAG>/${build_tag}/' storage/storage.yaml"
+					sh 'kubectl apply -f storage/storage.yaml'
+					
+					sh "sed -i 's/<BUILD_TAG>/${build_tag}/' order/order.yaml"
+					sh 'kubectl apply -f order/order.yaml'
+					
+					sh "sed -i 's/<BUILD_TAG>/${build_tag}/' logic/logic.yaml"
+					sh 'kubectl apply -f logic/logic.yaml'
 			    }
 			}	
 			
