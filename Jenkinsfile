@@ -6,7 +6,7 @@ parameters {
 
 podTemplate(label:label,cloud: "kubernetes",
     containers: [
-    	containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8', command: 'sleep', args: '99d',envVars: [envVar("BUILD_NUMBER")]),
+    	containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8', command: 'sleep', args: '99d',envVars: [envVar(key:"BUILD_NUMBER",value:${env.BUILD_NUMBER})]),
     	containerTemplate(name: 'docker', image: 'docker', command: 'sleep', args: '99d')]
 	    ,
     volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
