@@ -30,6 +30,13 @@ podTemplate(label:label,cloud: "kubernetes",
 			
 				git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'
 			
+			script {
+			    build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+			    if (env.BRANCH_NAME != 'master') {
+				build_tag = "${env.BRANCH_NAME}-${build_tag}"
+			    }
+			}
+			
 		}
 	  	//stage('Build jar') {
 		//	container('maven') {
@@ -78,10 +85,12 @@ podTemplate(label:label,cloud: "kubernetes",
 			
 			
 	  		container('maven') {
-				
+				def image_id = "jackbauer123/account:$BUILD_NUMBER"
 				withKubeConfig([credentialsId: 'kube2', serverUrl: 'https://10.168.1.199:6443']) {
 				//sh 'curl -LO -o https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl'
-			      		sh 'kubectl apply -f account/account.yaml'
+					sh "sed -i 's/<BUILD_TAG>/${build_tag}/' account.yaml"
+					sh "sed -i 's/<BRANCH_NAME>/${env.BRANCH_NAME}/' account.yaml"
+			      		sh 'kubectl apply -f account/account.yaml '
 		//			sh 'kubectl apply -f storage/storage.yaml'
 		//			sh 'kubectl apply -f order/order.yaml'
 		//			sh 'kubectl apply -f logic/logic.yaml'
