@@ -24,11 +24,7 @@ stage('SCM'){
 	    }
 	}
 	
-	
-
-}
-
-stage('build common'){
+	stage('build common'){
 	
 	podTemplate(inheritFrom: label_scm,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')]
 		   ){
@@ -93,6 +89,12 @@ stage ('build') {
 	) 
 
 }
+	
+	
+
+}
+
+
 	
 
 
