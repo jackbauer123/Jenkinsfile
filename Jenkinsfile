@@ -30,7 +30,7 @@ stage('SCM'){
 
 stage('build common'){
 	
-	podTemplate(label: label_build_common,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')]
+	podTemplate(inheritFrom: label_scm,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')]
 		   ){
 		    node(label_build_common) {
 				container('maven') {
@@ -44,7 +44,7 @@ stage('build common'){
 stage ('build') {
 	parallel (
 		"account": {
-			podTemplate(label: label_bulid_account,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')]){
+			podTemplate(inheritFrom: label_scm,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')]){
 				    node(label_bulid_account) {
 						container('maven') {
 							sh 'mvn -B -ntp clean package -DskipTests -f account/pom.xml'
@@ -56,7 +56,7 @@ stage ('build') {
 		
 		},
 		"order": {
-			podTemplate(label: label_bulid_storage,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')]){
+			podTemplate(inheritFrom: label_scm,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')]){
 				    node(label_bulid_storage) {
 						container('maven') {
 							sh 'mvn -B -ntp clean package -DskipTests -f storage/pom.xml'
@@ -67,7 +67,7 @@ stage ('build') {
 		
 		},
 		"storage": {
-			podTemplate(label: label_bulid_order,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')]){
+			podTemplate(inheritFrom: label_scm,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')]){
 				    node(label_bulid_order) {
 						container('maven') {
 							sh 'mvn -B -ntp clean package -DskipTests -f order/pom.xml'
@@ -78,7 +78,7 @@ stage ('build') {
 		
 		},
 		"logic": {
-			podTemplate(label: label_bulid_logic,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')]){
+			podTemplate(inheritFrom: label_scm,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')]){
 				    node(label_bulid_logic) {
 						container('maven') {
 							sh 'mvn -B -ntp clean package -DskipTests -f logic/pom.xml'
