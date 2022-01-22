@@ -34,7 +34,7 @@ stage('build common'){
 		   ){
 		    node(label_build_common) {
 				container('maven') {
-					sh 'mvn -B -ntp clean package -DskipTests -f samples-common/pom.xml'
+					sh 'mvn -B -ntp clean package -DskipTests -f account/pom.xml'
 				}
 		    }
 	}
