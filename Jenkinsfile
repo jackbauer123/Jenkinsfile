@@ -12,8 +12,8 @@ parameters {
 
 podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')])
 {
-	stage('SCM'){
-	    node(label_scm) {
+	node(label_scm) {
+		stage('SCM'){
 			git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
 			script {
 			    build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
@@ -21,16 +21,15 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
 				build_tag = "${build_tag}-${env.BUILD_NUMBER}"
 			    }
 			}
-	    }
+	    	}
 		
 	}	
-	stage('build common'){
-
-		    node(label_build_common) {
+	node(label_build_common) {
+			stage('build common'){
 				container('maven') {
 					sh 'mvn -B -ntp clean package -DskipTests -f account/pom.xml'
 				}
-		    }
+		   	 }
 
 
 	}
