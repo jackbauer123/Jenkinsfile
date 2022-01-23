@@ -1,9 +1,5 @@
 def label_scm = "mypod-${UUID.randomUUID().toString()}"
-def label_build_common = "mypod-${UUID.randomUUID().toString()}"
-def label_bulid_account = "mypod-${UUID.randomUUID().toString()}"
-def label_bulid_storage = "mypod-${UUID.randomUUID().toString()}"
-def label_bulid_order = "mypod-${UUID.randomUUID().toString()}"
-def label_bulid_logic = "mypod-${UUID.randomUUID().toString()}"
+
 
 parameters {
 	string(name: 'buid_id', defaultValue: "${env.BUILD_NUMBER}", description: 'What should I say?')
@@ -29,7 +25,7 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
 		stage('build common'){
 			container('maven') {
 					sh 'mvn -B -ntp clean package -DskipTests -f samples-common/pom.xml'
-					sh 'cd samples-common & mvn install'
+					//sh 'cd samples-common & mvn install'
 				
 				}
 		
