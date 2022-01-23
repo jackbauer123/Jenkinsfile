@@ -33,6 +33,7 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
 			stage('build common'){
 				container('maven') {
 					sh 'mvn -B -ntp clean package -DskipTests -f samples-common/pom.xml'
+					sh 'mvn install'
 				}
 		   	 }
 
