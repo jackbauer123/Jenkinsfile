@@ -47,6 +47,7 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
 
 
 			}
+	 }		 
 	)
 	
 
