@@ -23,17 +23,32 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
 			}
 	    	}
 		
-	}	
-	node(label_build_common) {
+	}
+	parallel ( 
+        "A":  { 
+            	node(label_scm) {
 			stage('build common'){
 				container('maven') {
-					sh 'mvn -B -ntp clean package -DskipTests -f account/pom.xml'
+					sh 'mvn -B -ntp clean package -DskipTests -f samples-common/pom.xml'
 				}
 		   	 }
 
 
-	}
+		}
 
+        },
+         "B": {
+			node(label_scm) {
+				stage('build account'){
+					container('maven') {
+						sh 'mvn -B -ntp clean package -DskipTests -f account/pom.xml'
+					}
+				 }
+
+
+			}
+	)
+	
 
 
 }
