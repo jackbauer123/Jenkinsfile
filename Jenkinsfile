@@ -9,10 +9,10 @@ parameters {
 	string(name: 'buid_id', defaultValue: "${env.BUILD_NUMBER}", description: 'What should I say?')
   }
 
-stage('SCM'){
-	
-	podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')])
-	{
+
+podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')])
+{
+	stage('SCM'){
 	    node(label_scm) {
 			git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
 			script {
@@ -23,27 +23,19 @@ stage('SCM'){
 			}
 	    }
 		
-		stage('build common'){
-	
-			podTemplate(inheritFrom: label_scm,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')]
-				   ){
-				    node(label_build_common) {
-						container('maven') {
-							sh 'mvn -B -ntp clean package -DskipTests -f account/pom.xml'
-						}
-				    }
-			}
+	}	
+	stage('build common'){
 
-		}
+		    node(label_build_common) {
+				container('maven') {
+					sh 'mvn -B -ntp clean package -DskipTests -f account/pom.xml'
+				}
+		    }
 
-		
-		
-		
+
 	}
-	
-	
-	
-	
+
+
 
 }
 
