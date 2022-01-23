@@ -12,7 +12,7 @@ parameters {
 
 podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')],
 	volumes: [persistentVolumeClaim(claimName: 'jenkins-pod-template-repo', mountPath: '/root/.m2repo')
-			,persistentVolumeClaim(claimName: 'jenkins-pod-template', mountPath: '/home/jenkins/agent/workspace/pod-test')]
+			,persistentVolumeClaim(claimName: 'jenkins-pod-template', mountPath: '/home/jenkins/agent/workspace/my-parallel')]
 )
 {
 	node(label_scm) {
