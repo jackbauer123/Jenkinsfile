@@ -1,1 +1,91 @@
+def label_scm = "mypod-${UUID.randomUUID().toString()}"
+
+
+parameters {
+	string(name: 'buid_id', defaultValue: "${env.BUILD_NUMBER}", description: 'What should I say?')
+  }
+
+
+podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')]
+	//,volumes: [persistentVolumeClaim(claimName: 'jenkins-pod-template-repo', mountPath: '/root/.m2/repository',readOnly: false)
+		//	,persistentVolumeClaim(claimName: 'jenkins-pod-template', mountPath: '/home/jenkins/agent/workspace',readOnly: false)]
+    ){
+	node(label_scm) {
+        stage('SCM'){
+              git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
+              script {
+                  build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+                  if (env.BRANCH_NAME != 'master') {
+                build_tag = "${build_tag}-${env.BUILD_NUMBER}"
+                  }
+              }
+        }
+		
+        stage('build common'){
+          container('maven') {
+                  sh 'mvn -B -ntp clean package -DskipTests -f samples-common/pom.xml'
+                  sh 'mvn install -pl samples-common'
+          
+            }
+
+        }
+		
+	}
+	parallel ( 
+        
+        "storage":  { 
+            	node(label_scm) {
+                    stage('build storage'){
+                      git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
+                      container('maven') {
+                          sh 'mvn -B -ntp clean package -DskipTests -f storage/pom.xml'
+                        }
+                       }
+
+
+		          }
+
+        },
+         "account": {
+              node(label_scm) {
+                    stage('build account'){
+                        git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
+                        container('maven') {
+                          sh 'mvn -B -ntp clean package -DskipTests -f account/pom.xml'
+                        }
+                     }
+
+
+              }
+	      }	,
+         "order": {
+              node(label_scm) {
+                    stage('build order'){
+                        git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
+                        container('maven') {
+                          sh 'mvn -B -ntp clean package -DskipTests -f order/pom.xml'
+                        }
+                     }
+
+
+              }
+	      }	,
+         "logic": {
+              node(label_scm) {
+                    stage('build logic'){
+                        git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
+                        container('maven') {
+                          sh 'mvn -B -ntp clean package -DskipTests -f logic/pom.xml'
+                        }
+                     }
+
+
+              }
+	      }	
+	)
+	
+
+
+}
+
 
