@@ -18,6 +18,7 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
 		      		
 		      		sh 'mvn -B -ntp clean package -DskipTests'
 				sh 'mvn install nxrm3:staging-deploy -Dtag=build-123'
+				
                   		
                         }
 	}
