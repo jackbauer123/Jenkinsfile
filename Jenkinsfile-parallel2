@@ -7,7 +7,7 @@ parameters {
 
 
 podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')]
-	,volumes: [configMapVolume(configMapName: 'setting.xml', mountPath: '/root/.m2')]
+	,volumes: [configMapVolume(configMapName: 'setting.xml', mountPath: '/config')]
     ){
 	
 	parallel ( 
@@ -17,6 +17,7 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
                     stage('build storage'){
                       git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
                       container('maven') {
+		      		sh 'mv /config/setting.xml /root/.m2/'
 		      		sh 'mvn -B -ntp clean package -DskipTests -f samples-common/pom.xml'
                   		sh 'mvn install -pl samples-common'
                           	sh 'mvn -B -ntp clean package -DskipTests -f storage/pom.xml'
@@ -32,6 +33,7 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
                     stage('build account'){
                         git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
                         container('maven') {
+				sh 'mv /config/setting.xml /root/.m2/'
 				sh 'mvn -B -ntp clean package -DskipTests -f samples-common/pom.xml'
                  		sh 'mvn install -pl samples-common'
                           	sh 'mvn -B -ntp clean package -DskipTests -f account/pom.xml'
@@ -46,6 +48,7 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
                     stage('build order'){
                         git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
                         container('maven') {
+				sh 'mv /config/setting.xml /root/.m2/'
 				sh 'mvn -B -ntp clean package -DskipTests -f samples-common/pom.xml'
                  		sh 'mvn install -pl samples-common'
                           	sh 'mvn -B -ntp clean package -DskipTests -f order/pom.xml'
@@ -60,6 +63,7 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
                     stage('build logic'){
                         git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
                         container('maven') {
+				sh 'mv /config/setting.xml /root/.m2/'
 				sh 'mvn -B -ntp clean package -DskipTests -f samples-common/pom.xml'
                   		sh 'mvn install -pl samples-common'
                          	sh 'mvn -B -ntp clean package -DskipTests -f logic/pom.xml'
