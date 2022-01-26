@@ -1,5 +1,6 @@
 def label_scm = "mypod-${UUID.randomUUID().toString()}"
 
+def settings_xml = '/config/settings.xml'
 
 parameters {
 	string(name: 'buid_id', defaultValue: "${env.BUILD_NUMBER}", description: 'What should I say?')
@@ -7,7 +8,7 @@ parameters {
 
 
 podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')]
-	,volumes: [configMapVolume(configMapName: 'settings.xml', mountPath: "~/.m2")]
+	,volumes: [configMapVolume(configMapName: 'settings.xml', mountPath: '/config')]
     ){
     
     
@@ -19,9 +20,9 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
                       git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
                       container('maven') {
 		      		
-		      		sh 'mvn -B -ntp clean package -DskipTests -pl samples-common'
-                  		sh 'mvn install -pl samples-common '
-                          	sh 'mvn -B -ntp clean package -DskipTests  -pl io.seata:samples-storage'
+		      		sh 'mvn -B -ntp clean package -DskipTests  samples-common -s settings_xml'
+                  		sh 'mvn install -pl samples-common  -s settings_xml'
+                          	sh 'mvn -B -ntp clean package -DskipTests -f storage/pom.xml  -s settings_xml'
                         }
                        }
 
@@ -34,9 +35,9 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
                     stage('build account'){
                         git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
                         container('maven') {
-				sh 'mvn -B -ntp clean package -DskipTests -pl samples-common '
-                 		sh 'mvn install -pl samples-common '
-                          	sh 'mvn -B -ntp clean package -DskipTests -pl io.seata:samples-account'
+				sh 'mvn -B -ntp clean package -DskipTests samples-common  -s settings_xml'
+                 		sh 'mvn install -pl samples-common  -s settings_xml'
+                          	sh 'mvn -B -ntp clean package -DskipTests -f account/pom.xml -s settings_xml'
                         }
                      }
 
@@ -48,9 +49,9 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
                     stage('build order'){
                         git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
                         container('maven') {
-				sh 'mvn -B -ntp clean package -DskipTests -pl samples-common '
-                 		sh 'mvn install -pl samples-common '
-                          	sh 'mvn -B -ntp clean package -DskipTests -pl  io.seata:samples-order'
+				sh 'mvn -B -ntp clean package -DskipTests  samples-common -s settings_xml'
+                 		sh 'mvn install -pl samples-common -s settings_xml'
+                          	sh 'mvn -B -ntp clean package -DskipTests -f order/pom.xml -s settings_xml'
                         }
                      }
 
@@ -62,9 +63,9 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
                     stage('build logic'){
                         git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
                         container('maven') {
-				sh 'mvn -B -ntp clean package -DskipTests -pl  samples-common'
-                  		sh 'mvn install -pl samples-common'
-                         	sh 'mvn -B -ntp clean package -DskipTests -pl  io.seata:samples-business'
+				sh 'mvn -B -ntp clean package -DskipTests  samples-common -s settings_xml'
+                  		sh 'mvn install -pl samples-common -s settings_xml'
+                         	sh 'mvn -B -ntp clean package -DskipTests -f logic/pom.xml -s settings_xml'
                         }
                      }
 
