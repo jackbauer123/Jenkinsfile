@@ -19,9 +19,9 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
                       git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
                       container('maven') {
 		      		
-		      		sh 'mvn -B -pl clean package -DskipTests  samples-common'
+		      		sh 'mvn -B -ntp clean package -DskipTests -pl samples-common'
                   		sh 'mvn install -pl samples-common '
-                          	sh 'mvn -B -pl clean package -DskipTests  samples-storage'
+                          	sh 'mvn -B -ntp clean package -DskipTests  -pl samples-storage'
                         }
                        }
 
@@ -34,9 +34,9 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
                     stage('build account'){
                         git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
                         container('maven') {
-				sh 'mvn -B -pl clean package -DskipTests  samples-common '
+				sh 'mvn -B -ntp clean package -DskipTests -pl samples-common '
                  		sh 'mvn install -pl samples-common '
-                          	sh 'mvn -B -pl clean package -DskipTests  samples-account'
+                          	sh 'mvn -B -ntp clean package -DskipTests -pl samples-account'
                         }
                      }
 
@@ -48,9 +48,9 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
                     stage('build order'){
                         git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
                         container('maven') {
-				sh 'mvn -B -pl clean package -DskipTests samples-common '
+				sh 'mvn -B -ntp clean package -DskipTests -pl samples-common '
                  		sh 'mvn install -pl samples-common '
-                          	sh 'mvn -B -pl clean package -DskipTests  samples-order'
+                          	sh 'mvn -B -ntp clean package -DskipTests -pl  samples-order'
                         }
                      }
 
@@ -62,9 +62,9 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
                     stage('build logic'){
                         git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
                         container('maven') {
-				sh 'mvn -B -pl clean package -DskipTests  samples-common'
+				sh 'mvn -B -ntp clean package -DskipTests -pl  samples-common'
                   		sh 'mvn install -pl samples-common'
-                         	sh 'mvn -B -pl clean package -DskipTests  samples-business'
+                         	sh 'mvn -B -ntp clean package -DskipTests -pl  samples-business'
                         }
                      }
 
