@@ -37,7 +37,7 @@ podTemplate(label: label_scm,
 			stage('build storage image') {
 			  
 				  container('docker'){
-					  storage = docker.build("library/storage:${build_tag}","storage")
+					  storage = docker.build("harbor.yuanzhibin.com/library/storage:${build_tag}","storage")
 
 				  }
 			 
@@ -77,7 +77,7 @@ podTemplate(label: label_scm,
 		     	stage('build account image') {
 			  
 				  container('docker'){
-					  account = docker.build("library/account:${build_tag}","account")
+					  account = docker.build("harbor.yuanzhibin.com/library/account:${build_tag}","account")
 
 				  }
 			 
@@ -116,7 +116,7 @@ podTemplate(label: label_scm,
 		     	stage('build order image') {
 			  
 				  container('docker'){
-					  order = docker.build("library/order:${build_tag}","order")
+					  order = docker.build("harbor.yuanzhibin.com/library/order:${build_tag}","order")
 
 				  }
 			 
@@ -157,7 +157,7 @@ podTemplate(label: label_scm,
 		     	stage('build logic image') {
 			  
 				  container('docker'){
-					  logic = docker.build("library/logic:${build_tag}","logic")
+					  logic = docker.build("harbor.yuanzhibin.com/library/logic:${build_tag}","logic")
 
 				  }
 			 
