@@ -62,7 +62,7 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
                     stage('build logic'){
                         git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
                         container('maven') {
-				sh 'mvn -B -npl clean package -DskipTests  samples-common'
+				sh 'mvn -B -pl clean package -DskipTests  samples-common'
                   		sh 'mvn install -pl samples-common'
                          	sh 'mvn -B -pl clean package -DskipTests  logic'
                         }
