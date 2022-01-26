@@ -21,7 +21,7 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
 		      		
 		      		sh 'mvn -B -pl clean package -DskipTests  samples-common'
                   		sh 'mvn install -pl samples-common '
-                          	sh 'mvn -B -pl clean package -DskipTests  storage'
+                          	sh 'mvn -B -pl clean package -DskipTests  samples-storage'
                         }
                        }
 
@@ -36,7 +36,7 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
                         container('maven') {
 				sh 'mvn -B -pl clean package -DskipTests  samples-common '
                  		sh 'mvn install -pl samples-common '
-                          	sh 'mvn -B -pl clean package -DskipTests  account'
+                          	sh 'mvn -B -pl clean package -DskipTests  samples-account'
                         }
                      }
 
@@ -50,7 +50,7 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
                         container('maven') {
 				sh 'mvn -B -pl clean package -DskipTests samples-common '
                  		sh 'mvn install -pl samples-common '
-                          	sh 'mvn -B -pl clean package -DskipTests  order'
+                          	sh 'mvn -B -pl clean package -DskipTests  samples-order'
                         }
                      }
 
@@ -64,7 +64,7 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
                         container('maven') {
 				sh 'mvn -B -pl clean package -DskipTests  samples-common'
                   		sh 'mvn install -pl samples-common'
-                         	sh 'mvn -B -pl clean package -DskipTests  logic'
+                         	sh 'mvn -B -pl clean package -DskipTests  samples-business'
                         }
                      }
 
