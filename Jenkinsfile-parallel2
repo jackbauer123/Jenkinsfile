@@ -11,19 +11,67 @@ podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(
     ){
     
     
-    node(label_scm){
-    	stage('get all deploy'){
-		 git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
+   parallel ( 
+        
+        "storage":  { 
+            	node(label_scm) {
+                    stage('build storage'){
+                      git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
                       container('maven') {
 		      		
-		      		sh 'mvn -B -ntp clean package -DskipTests -s /config/setting.xml'
-				sh 'mvn install nxrm3:staging-deploy  -s /config/setting.xml'
-				sh 'mvn deploy -s /config/setting.xml'
-				
-                  		
+		      		sh 'mvn -B -ntp clean package -DskipTests -f samples-common/pom.xml -s /config/setting.xml'
+                  		sh 'mvn install -pl samples-common  -s /config/setting.xml'
+                          	sh 'mvn -B -ntp clean package -DskipTests -f storage/pom.xml  -s /config/setting.xml'
                         }
-	}
-    }	
+                       }
+
+
+		          }
+
+        },
+         "account": {
+              node(label_scm) {
+                    stage('build account'){
+                        git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
+                        container('maven') {
+				sh 'mvn -B -ntp clean package -DskipTests -f samples-common/pom.xml   -s /config/setting.xml'
+                 		sh 'mvn install -pl samples-common  -s /config/setting.xml'
+                          	sh 'mvn -B -ntp clean package -DskipTests -f account/pom.xml  -s /config/setting.xml'
+                        }
+                     }
+
+
+              }
+	      }	,
+         "order": {
+              node(label_scm) {
+                    stage('build order'){
+                        git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
+                        container('maven') {
+				sh 'mvn -B -ntp clean package -DskipTests -f samples-common/pom.xml  -s /config/setting.xml'
+                 		sh 'mvn install -pl samples-common  -s /config/setting.xml'
+                          	sh 'mvn -B -ntp clean package -DskipTests -f order/pom.xml  -s /config/setting.xml'
+                        }
+                     }
+
+
+              }
+	      }	,
+         "logic": {
+              node(label_scm) {
+                    stage('build logic'){
+                        git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'	
+                        container('maven') {
+				sh 'mvn -B -ntp clean package -DskipTests -f samples-common/pom.xml  -s /config/setting.xml'
+                  		sh 'mvn install -pl samples-common -s /config/setting.xml'
+                         	sh 'mvn -B -ntp clean package -DskipTests -f logic/pom.xml  -s /config/setting.xml'
+                        }
+                     }
+
+
+              }
+	      }	
+	)
 	
 	
 
