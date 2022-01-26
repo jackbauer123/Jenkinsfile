@@ -37,11 +37,22 @@ podTemplate(label: label_scm,
 			stage('build storage image') {
 			  
 				  container('docker'){
-					  account = docker.build("jackbauer123/storage:${build_tag}","storage")
+					  storage = docker.build("jackbauer123/storage:${build_tag}","storage")
 
 				  }
 			 
 			}
+			stage('Push storage image') {
+			  container('docker'){
+				docker.withRegistry('', 'hubdocker') {
+			
+					storage.push("${build_tag}")
+					
+				} 
+
+			  }	  
+	  
+	 	 }
 
 
 		}
@@ -71,6 +82,17 @@ podTemplate(label: label_scm,
 				  }
 			 
 			}
+			stage('Push account image') {
+			  container('docker'){
+				docker.withRegistry('', 'hubdocker') {
+					
+					account.push("${build_tag}")
+					
+				} 
+
+			  }	  
+	  
+	 	 }
 
 
               }
@@ -94,11 +116,23 @@ podTemplate(label: label_scm,
 		     	stage('build order image') {
 			  
 				  container('docker'){
-					  account = docker.build("jackbauer123/order:${build_tag}","order")
+					  order = docker.build("jackbauer123/order:${build_tag}","order")
 
 				  }
 			 
 			}
+			
+			stage('Push order image') {
+			  container('docker'){
+				docker.withRegistry('', 'hubdocker') {
+							
+					order.push("${build_tag}")
+					
+				} 
+
+			  }	  
+	  
+	 	 }
 
 
               }
@@ -123,11 +157,23 @@ podTemplate(label: label_scm,
 		     	stage('build logic image') {
 			  
 				  container('docker'){
-					  account = docker.build("jackbauer123/logic:${build_tag}","logic")
+					  logic = docker.build("jackbauer123/logic:${build_tag}","logic")
 
 				  }
 			 
 			}
+			
+			stage('Push  logic image') {
+			  container('docker'){
+				docker.withRegistry('', 'hubdocker') {
+					
+					logic.push("${build_tag}")
+							
+				} 
+
+			  }	  
+	  
+	 	 }
 
 
               }
