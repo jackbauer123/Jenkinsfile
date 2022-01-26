@@ -7,7 +7,7 @@ parameters {
 
 
 podTemplate(label: label_scm,cloud: "kubernetes",containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d')]
-	,volumes: [configMapVolume(configMapName: 'setting.xml', mountPath: '/config')]
+	,volumes: [configMapVolume(configMapName: 'setting.xml', mountPath: '/root/.m2')]
     ){
     
     
