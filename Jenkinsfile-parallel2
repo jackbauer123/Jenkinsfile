@@ -12,6 +12,7 @@ podTemplate(label: label_scm,
 				containerTemplate(name: 'docker', image: 'docker', command: 'sleep', args: '99d'),
     				containerTemplate(name: 'kubectl', image: 'bitnami/kubectl:1.20.15', command: 'sleep', args: '99d')],
 		volumes: [configMapVolume(configMapName: 'settings.xml', mountPath: '/config'),
+			//configMapVolume(configMapName: 'ca.crt', mountPath: '/etc/docker/certs.d/harbor.yuanzhibin.com'),
 			hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]
     ){
     
