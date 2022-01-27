@@ -1,1 +1,40 @@
 
+def label_scm = "mypod-${UUID.randomUUID().toString()}"
+
+podTemplate(label: label_scm,
+		cloud: "kubernetes",
+		containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d'),
+				containerTemplate(name: 'docker', image: 'docker', command: 'sleep', args: '99d'),
+    				containerTemplate(name: 'kubectl', image: 'bitnami/kubectl:1.20.15', command: 'sleep', args: '99d')],
+		volumes: [configMapVolume(configMapName: 'settings.xml', mountPath: '/config'),
+			hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]
+    ){
+    
+    
+        node(label_scm) {
+        
+                          stage('build storage image') {
+
+                              container('docker'){
+                                  storage = docker.pull('nginx')
+                              }
+
+                          }
+        
+        
+                          stage('push docker'){                  
+                          
+                                container('docker'){
+                                      docker.withRegistry("https://harbor.yuanzhibin.com", 'harbor-admin') {
+
+                                          storage.push()
+
+                                      } 
+
+                                }	
+
+                          }
+
+
+        }
+  }
