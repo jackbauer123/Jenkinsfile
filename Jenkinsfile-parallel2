@@ -44,7 +44,7 @@ podTemplate(label: label_scm,
 			}
 			stage('Push storage image') {
 			  container('docker'){
-				docker.withRegistry('', 'hubdocker') {
+				docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
 			
 					storage.push("${build_tag}")
 					
@@ -84,7 +84,7 @@ podTemplate(label: label_scm,
 			}
 			stage('Push account image') {
 			  container('docker'){
-				docker.withRegistry('', 'hubdocker') {
+				docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
 					
 					account.push("${build_tag}")
 					
@@ -124,7 +124,7 @@ podTemplate(label: label_scm,
 			
 			stage('Push order image') {
 			  container('docker'){
-				docker.withRegistry('', 'hubdocker') {
+				docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
 							
 					order.push("${build_tag}")
 					
@@ -165,7 +165,7 @@ podTemplate(label: label_scm,
 			
 			stage('Push  logic image') {
 			  container('docker'){
-				docker.withRegistry('', 'hubdocker') {
+				docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
 					
 					logic.push("${build_tag}")
 							
