@@ -44,16 +44,34 @@ podTemplate(label: label_scm,
 			 
 			}
 			stage('Push storage image') {
-			  container('docker'){
-				docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
-			
-					storage.push("${build_tag}")
-					
-				} 
+				  container('docker'){
+					docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
 
-			  }	  
+						storage.push("${build_tag}")
+
+					} 
+
+				  }	  
 	  
-	 	 }
+	 	 	}
+			stage('deploy storage'){
+			
+			
+				container('kubectl') {
+
+					withKubeConfig([credentialsId: 'kube2', serverUrl: 'https://10.168.1.199:6443']) {
+
+						sh "sed -i 's/<BUILD_TAG>/${build_tag}/' storage/storage.yaml"
+						sh 'kubectl apply -f storage/storage.yaml'
+
+
+				    }
+				}	
+			
+			
+	  
+	  		}
+	  
 
 
 		}
@@ -84,16 +102,33 @@ podTemplate(label: label_scm,
 			 
 			}
 			stage('Push account image') {
-			  container('docker'){
-				docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
-					
-					account.push("${build_tag}")
-					
-				} 
+				  container('docker'){
+					docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
 
-			  }	  
+						account.push("${build_tag}")
+
+					} 
+
+				  }	  
 	  
-	 	 }
+	 	 	}
+			stage('deploy account'){
+			
+			
+				container('kubectl') {
+
+					withKubeConfig([credentialsId: 'kube2', serverUrl: 'https://10.168.1.199:6443']) {
+
+						sh "sed -i 's/<BUILD_TAG>/${build_tag}/' account/account.yaml"
+						sh 'kubectl apply -f account/account.yaml'
+
+
+				    }
+				}	
+			
+			
+	  
+	  		}
 
 
               }
@@ -124,16 +159,33 @@ podTemplate(label: label_scm,
 			}
 			
 			stage('Push order image') {
-			  container('docker'){
-				docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
-							
-					order.push("${build_tag}")
-					
-				} 
+				  container('docker'){
+					docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
 
-			  }	  
+						order.push("${build_tag}")
+
+					} 
+
+				  }	  
 	  
-	 	 }
+	 		 }
+			 stage('deploy order'){
+			
+			
+				container('kubectl') {
+
+					withKubeConfig([credentialsId: 'kube2', serverUrl: 'https://10.168.1.199:6443']) {
+
+						sh "sed -i 's/<BUILD_TAG>/${build_tag}/' order/order.yaml"
+						sh 'kubectl apply -f order/order.yaml'
+
+
+				    }
+				}	
+			
+			
+	  
+	  		}
 
 
               }
@@ -165,16 +217,33 @@ podTemplate(label: label_scm,
 			}
 			
 			stage('Push  logic image') {
-			  container('docker'){
-				docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
-					
-					logic.push("${build_tag}")
-							
-				} 
+				  container('docker'){
+					docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
 
-			  }	  
+						logic.push("${build_tag}")
+
+					} 
+
+				  }	  
 	  
-	 	 }
+	 	 	}
+			stage('deploy storage'){
+			
+			
+				container('kubectl') {
+
+					withKubeConfig([credentialsId: 'kube2', serverUrl: 'https://10.168.1.199:6443']) {
+
+						sh "sed -i 's/<BUILD_TAG>/${build_tag}/' logic/logic.yaml"
+						sh 'kubectl apply -f logic/logic.yaml'
+
+
+				    }
+				}	
+			
+			
+	  
+	  		}
 
 
               }
