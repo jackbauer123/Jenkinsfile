@@ -17,7 +17,7 @@ podTemplate(label: label_scm,
     ){
         
         
-         "account": {
+         
               node(label_scm) {
                     	stage('build account jar'){
 				git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'
@@ -71,7 +71,7 @@ podTemplate(label: label_scm,
 	  		}
 
 
-              }
+              
 	}
 	
 	
