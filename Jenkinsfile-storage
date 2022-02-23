@@ -36,14 +36,14 @@ podTemplate(label: label_scm,
 		     	stage('build storage image') {
 			  
 				  container('docker'){
-					  storage = docker.build("jackbauer123/storage:${build_tag}","storage")
+					  storage = docker.build("harbor.yuanzhibin.com/library/storage:${build_tag}","storage")
 
 				  }
 			 
 			}
 			stage('Push storage image') {
 				  container('docker'){
-					docker.withRegistry('', 'hubdocker') {
+					docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
 
 						storage.push("${build_tag}")
 
