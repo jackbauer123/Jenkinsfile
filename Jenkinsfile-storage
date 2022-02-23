@@ -36,7 +36,7 @@ podTemplate(label: label_scm,
 		     	stage('build storage image') {
 			  
 				  container('docker'){
-					  account = docker.build("jackbauer123/storage:${build_tag}","storage")
+					  storage = docker.build("jackbauer123/storage:${build_tag}","storage")
 
 				  }
 			 
@@ -45,7 +45,7 @@ podTemplate(label: label_scm,
 				  container('docker'){
 					docker.withRegistry('', 'hubdocker') {
 
-						account.push("${build_tag}")
+						storage.push("${build_tag}")
 
 					} 
 
@@ -59,8 +59,8 @@ podTemplate(label: label_scm,
 
 					withKubeConfig([credentialsId: 'kube2', serverUrl: 'https://10.168.1.199:6443']) {
 
-						sh "sed -i 's/<BUILD_TAG>/${build_tag}/' account/account.yaml"
-						sh 'kubectl apply -f account/account.yaml'
+						sh "sed -i 's/<BUILD_TAG>/${build_tag}/' storage/storage.yaml"
+						sh 'kubectl apply -f storage/storage.yaml'
 
 
 				    }
