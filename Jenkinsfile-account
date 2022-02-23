@@ -43,7 +43,7 @@ podTemplate(label: label_scm,
 			}
 			stage('Push account image') {
 				  container('docker'){
-					docker.withRegistry('https://hub.docker.com', 'hubdocker') {
+					docker.withRegistry('http://hub.docker.com', 'hubdocker') {
 
 						account.push("${build_tag}")
 
