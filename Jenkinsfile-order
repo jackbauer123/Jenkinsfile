@@ -1,0 +1,81 @@
+def label_scm = "mypod-${UUID.randomUUID().toString()}"
+
+
+parameters {
+	string(name: 'buid_id', defaultValue: "${env.BUILD_NUMBER}", description: 'What should I say?')
+  }
+
+
+podTemplate(label: label_scm,
+		cloud: "kubernetes",
+		containers: [containerTemplate(name: 'maven', image: 'maven:3.8.4-jdk-8',command: 'sleep', args: '99d'),
+				containerTemplate(name: 'docker', image: 'docker', command: 'sleep', args: '99d'),
+    				containerTemplate(name: 'kubectl', image: 'cnych/kubectl', command: 'cat', ttyEnabled: true)],
+		volumes: [configMapVolume(configMapName: 'settings.xml', mountPath: '/config'),
+			//configMapVolume(configMapName: 'ca.crt', mountPath: '/etc/docker/certs.d/harbor.yuanzhibin.com'),
+			hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]
+    ){
+        
+        
+         
+              node(label_scm) {
+                    	stage('build order jar'){
+				git credentialsId: 'github', url: 'git@github.com:jackbauer123/mytest.git'
+				script {
+				    build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+				    if (env.BRANCH_NAME != 'master') {
+					build_tag = "${build_tag}-${env.BUILD_NUMBER}"
+				    }
+				}
+				container('maven') {
+					sh 'mvn -B -ntp clean package -DskipTests -f samples-common/pom.xml  -s /config/settings.xml'
+					sh 'mvn install -pl samples-common  -s /config/settings.xml'
+					sh 'mvn -B -ntp clean package -DskipTests -f order/pom.xml -s /config/settings.xml'
+				}
+                     	}
+		     	stage('build order image') {
+			  
+				  container('docker'){
+					  order = docker.build("jackbauer123/order:${build_tag}","order")
+
+				  }
+			 
+			}
+			stage('Push order image') {
+				  container('docker'){
+					docker.withRegistry('', 'hubdocker') {
+
+						order.push("${build_tag}")
+
+					} 
+
+				  }	  
+	  
+	 	 	}
+			stage('deploy order'){
+			
+			
+				container('kubectl') {
+
+					withKubeConfig([credentialsId: 'kube2', serverUrl: 'https://10.168.1.199:6443']) {
+
+						sh "sed -i 's/<BUILD_TAG>/${build_tag}/' order/order.yaml"
+						sh 'kubectl apply -f order/order.yaml'
+
+
+				    }
+				}	
+			
+			
+	  
+	  		}
+
+
+              
+	
+	}
+	
+	
+
+
+}
