@@ -36,14 +36,14 @@ podTemplate(label: label_scm,
 		     	stage('build order image') {
 			  
 				  container('docker'){
-					  order = docker.build("jackbauer123/order:${build_tag}","order")
+					  order = docker.build("harbor.yuanzhibin.com/library/order:${build_tag}","order")
 
 				  }
 			 
 			}
 			stage('Push order image') {
 				  container('docker'){
-					docker.withRegistry('', 'hubdocker') {
+					docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
 
 						order.push("${build_tag}")
 
