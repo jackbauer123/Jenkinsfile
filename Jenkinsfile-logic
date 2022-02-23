@@ -36,14 +36,14 @@ podTemplate(label: label_scm,
 		     	stage('build logic image') {
 			  
 				  container('docker'){
-					  logic = docker.build("jackbauer123/logic:${build_tag}","logic")
+					  logic = docker.build("harbor.yuanzhibin.com/library/logic:${build_tag}","logic")
 
 				  }
 			 
 			}
 			stage('Push logic image') {
 				  container('docker'){
-					docker.withRegistry('', 'hubdocker') {
+					docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
 
 						logic.push("${build_tag}")
 
