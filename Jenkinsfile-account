@@ -36,14 +36,14 @@ podTemplate(label: label_scm,
 		     	stage('build account image') {
 			  
 				  container('docker'){
-					  account = docker.build("account:${build_tag}","account")
+					  account = docker.build("jackbauer123/account:${build_tag}","account")
 
 				  }
 			 
 			}
 			stage('Push account image') {
 				  container('docker'){
-					docker.withRegistry('http://hub.docker.com', 'hubdocker') {
+					docker.withRegistry('', 'hubdocker') {
 
 						account.push("${build_tag}")
 
