@@ -57,7 +57,7 @@ podTemplate(label: label_scm,
 			
 				container('kubectl') {
 
-					withKubeConfig([credentialsId: 'kube2', serverUrl: '']) {
+					withKubeConfig([credentialsId: 'kube2', serverUrl: 'https://10.168.1.199:6443']) {
 
 						sh "sed -i 's/<BUILD_TAG>/${build_tag}/' account/account.yaml"
 						sh 'kubectl apply -f account/account.yaml'
