@@ -36,14 +36,14 @@ podTemplate(label: label_scm,
 		     	stage('build account image') {
 			  
 				  container('docker'){
-					  account = docker.build("jackbauer123/account:${build_tag}","account")
+					  account = docker.build("harbor.yuanzhibin.com/library/account:${build_tag}","account")
 
 				  }
 			 
 			}
 			stage('Push account image') {
 				  container('docker'){
-					docker.withRegistry('', 'hubdocker') {
+					docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
 
 						account.push("${build_tag}")
 
