@@ -36,7 +36,7 @@ podTemplate(label: label_scm,
 		     	stage('build account image') {
 			  
 				  container('docker'){
-					  account = docker.build("harbor.yuanzhibin.com/library/account:${build_tag}","account")
+					  account = docker.build("account:${build_tag}","account")
 
 				  }
 			 
