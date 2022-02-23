@@ -43,7 +43,7 @@ podTemplate(label: label_scm,
 			}
 			stage('Push account image') {
 				  container('docker'){
-					docker.withRegistry('https://harbor.yuanzhibin.com', 'harbor-admin') {
+					docker.withRegistry('https://hub.docker.com', 'hubdocker') {
 
 						account.push("${build_tag}")
 
